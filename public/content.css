@@ -1,0 +1,300 @@
+body.flavortown-mood-adventurous {
+  font-family: 'Impact', 'Arial Black', sans-serif !important;
+  font-weight: 700 !important;
+}
+
+body.flavortown-mood-nostalgic {
+  font-family: 'Georgia', 'Times New Roman', serif !important;
+  font-style: italic !important;
+}
+
+body.flavortown-mood-mysterious {
+  font-family: 'Garamond', 'Palatino', serif !important;
+  letter-spacing: 1px !important;
+}
+
+body.flavortown-mood-energetic {
+  font-family: 'Verdana', 'Trebuchet MS', sans-serif !important;
+  font-weight: 600 !important;
+}
+
+body.flavortown-medieval,
+body.flavortown-kawaii {
+  transition: background 0.5s ease;
+  min-height: 100vh !important;
+  overflow-x: hidden !important;
+}
+
+body.flavortown-medieval::-webkit-scrollbar,
+body.flavortown-kawaii::-webkit-scrollbar {
+  display: none;
+}
+
+body.flavortown-medieval,
+body.flavortown-kawaii {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+html:has(body.flavortown-medieval),
+html:has(body.flavortown-kawaii) {
+  background: inherit !important;
+  overflow-x: hidden !important;
+}
+
+html:has(body.flavortown-medieval)::-webkit-scrollbar,
+html:has(body.flavortown-kawaii)::-webkit-scrollbar {
+  display: none;
+}
+
+html:has(body.flavortown-medieval),
+html:has(body.flavortown-kawaii) {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+body.flavortown-medieval {
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><rect fill="%23f4e8d0" width="100" height="100"/><path d="M0 0 L100 0 L100 100 L0 100 Z" fill="none" stroke="%23d4c5b0" stroke-width="1" opacity="0.1"/></svg>') !important;
+  background-color: #f4e8d0 !important;
+  font-family: 'Crimson Text', 'Garamond', serif !important;
+}
+
+body.flavortown-medieval h1,
+body.flavortown-medieval h2,
+body.flavortown-medieval h3 {
+  color: #3d2817 !important;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2) !important;
+}
+
+body.flavortown-medieval p {
+  color: #2d1f1a !important;
+  line-height: 1.8 !important;
+}
+
+body.flavortown-kawaii {
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><rect fill="%23ffc0cb" width="100" height="100"/><circle cx="20" cy="20" r="3" fill="%23ff69b4" opacity="0.3"/><circle cx="80" cy="60" r="3" fill="%23ff69b4" opacity="0.3"/><circle cx="50" cy="80" r="3" fill="%23ff69b4" opacity="0.3"/></svg>') !important;
+  background-color: #ffc0cb !important;
+  font-family: 'Comic Sans MS', 'Segoe UI Emoji', sans-serif !important;
+}
+
+body.flavortown-kawaii h1,
+body.flavortown-kawaii h2,
+body.flavortown-kawaii h3 {
+  color: #ff69b4 !important;
+  text-shadow: 2px 2px 0 #fff, 3px 3px 0 #ffc0cb !important;
+}
+
+body.flavortown-kawaii p {
+  color: #8b4789 !important;
+  line-height: 1.8 !important;
+}
+
+body.flavortown-kawaii a {
+  color: #ff1493 !important;
+}
+
+body.flavortown-kawaii button {
+  border-radius: 12px !important;
+}
+
+.flavortown-aura {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -1;
+  opacity: 0.1;
+}
+
+body.flavortown-medieval .flavortown-aura {
+  background: radial-gradient(circle at 50% 50%, #8b7355 0%, transparent 70%);
+}
+
+body.flavortown-kawaii .flavortown-aura {
+  background: radial-gradient(circle at 50% 50%, #ff69b4 0%, transparent 70%);
+  animation: pulse 2.5s ease-in-out infinite;
+}
+
+.flavor-word {
+  display: inline-block;
+  padding: 2px 8px;
+  background: rgba(139, 115, 85, 0.2);
+  border-radius: 4px;
+  font-weight: 600;
+  color: #8b7355 !important;
+  margin: 0 4px;
+}
+
+.flavor-emoji {
+  display: inline-block;
+  margin: 0 4px;
+  animation: bounce 1s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 0.1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+.productivity-widget {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: rgba(255, 255, 255, 0.95);
+  border: 2px solid #999;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  z-index: 999999;
+  min-width: 280px;
+  font-family: 'Segoe UI', sans-serif;
+  transition: all 0.3s ease;
+  cursor: move;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+body.flavortown-medieval .productivity-widget {
+  background: rgba(244, 232, 208, 0.95);
+  border-color: #8b7355;
+}
+
+body.flavortown-medieval .productivity-widget h3 {
+  color: #8b7355;
+}
+
+body.flavortown-medieval .productivity-widget .goal {
+  background: #f4e8d0;
+}
+
+body.flavortown-medieval .productivity-widget .timer {
+  color: #8b4513;
+}
+
+body.flavortown-medieval .productivity-widget .control-btn {
+  background: #8b7355;
+}
+
+body.flavortown-medieval .productivity-widget .control-btn:hover {
+  background: #6d5a43;
+}
+
+body.flavortown-kawaii .productivity-widget {
+  background: rgba(255, 240, 245, 0.95);
+  border-color: #ff69b4;
+}
+
+body.flavortown-kawaii .productivity-widget h3 {
+  color: #ff69b4;
+}
+
+body.flavortown-kawaii .productivity-widget .goal {
+  background: #ffc0cb;
+}
+
+body.flavortown-kawaii .productivity-widget .timer {
+  color: #ff1493;
+}
+
+body.flavortown-kawaii .productivity-widget .control-btn {
+  background: #ff69b4;
+}
+
+body.flavortown-kawaii .productivity-widget .control-btn:hover {
+  background: #ff1493;
+}
+
+.productivity-widget.minimized {
+  min-width: 60px;
+  padding: 10px;
+}
+
+.productivity-widget.minimized .widget-content {
+  display: none;
+}
+
+.productivity-widget h3 {
+  margin: 0 0 15px 0;
+  font-size: 18px;
+  text-align: center;
+}
+
+.productivity-widget .goal {
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  color: #333;
+  font-size: 14px;
+  text-align: center;
+}
+
+.productivity-widget .timer {
+  text-align: center;
+  font-size: 32px;
+  font-weight: bold;
+  margin: 15px 0;
+}
+
+.productivity-widget .controls {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 15px;
+}
+
+.productivity-widget .control-btn {
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.productivity-widget .close-btn,
+.productivity-widget .minimize-btn,
+.productivity-widget .popout-btn {
+  position: absolute;
+  top: 8px;
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: #999;
+}
+
+.productivity-widget .close-btn {
+  right: 8px;
+}
+
+.productivity-widget .minimize-btn {
+  right: 35px;
+}
+
+.productivity-widget .popout-btn {
+  right: 62px;
+}
+
+.productivity-widget .close-btn:hover,
+.productivity-widget .minimize-btn:hover,
+.productivity-widget .popout-btn:hover {
+  color: #333;
+}
