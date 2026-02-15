@@ -31,8 +31,8 @@ Click the extension icon to open the popup:
 ## Development
 
 ```bash
-npm install          # Install dependencies
-npm run build        # Build for production
+npm install
+npm run build
 ```
 
 ## Tech Stack
@@ -44,21 +44,22 @@ npm run build        # Build for production
 ## Project Structure
 
 ```
-├── public/
-│   ├── manifest.json
-│   ├── background.js
-│   ├── content.js
-│   └── content.css
-├── src/
-│   ├── popup.tsx
-│   ├── popup.css
-│   └── stats.ts
-└── dist/
+public/
+  manifest.json
+  background.js
+  content.js
+  content.css
+src/
+  popup.tsx
+  popup.css
+  stats.ts
+dist/
 ```
 
 ## Themes
 
 Medieval: Parchment background, serif fonts, brown color scheme
+
 Kawaii: Pink background, rounded corners, cute anime aesthetic
 
 ## License
