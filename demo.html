@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pasta's Pomodoro - Demo</title>
-  <link rel="stylesheet" href="dist/content.css">
   <style>
     * {
       margin: 0;
@@ -21,15 +20,43 @@
       transition: all 0.5s ease;
     }
 
+    body.medieval {
+      background: #f4e8d0;
+      font-family: 'Crimson Text', 'Garamond', serif;
+    }
+
+    body.kawaii {
+      background: #ffc0cb;
+      font-family: 'Comic Sans MS', 'Segoe UI Emoji', sans-serif;
+    }
+
     h1 {
       font-size: 48px;
       margin-bottom: 20px;
       text-align: center;
     }
 
+    body.medieval h1 {
+      color: #3d2817;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    body.kawaii h1 {
+      color: #ff69b4;
+      text-shadow: 2px 2px 0 #fff, 3px 3px 0 #ffc0cb;
+    }
+
     h2 {
       font-size: 32px;
       margin: 40px 0 20px;
+    }
+
+    body.medieval h2 {
+      color: #3d2817;
+    }
+
+    body.kawaii h2 {
+      color: #ff69b4;
     }
 
     h3 {
@@ -40,6 +67,14 @@
     p {
       margin-bottom: 15px;
       font-size: 18px;
+    }
+
+    body.medieval p {
+      color: #2d1f1a;
+    }
+
+    body.kawaii p {
+      color: #8b4789;
     }
 
     .demo-controls {
@@ -215,33 +250,17 @@
 
   <script>
     function applyMedieval() {
-      document.body.classList.remove('flavortown-kawaii');
-      document.body.classList.add('flavortown-medieval');
-      
-      const aura = document.createElement('div');
-      aura.className = 'flavortown-aura';
-      aura.id = 'flavortown-aura';
-      const existing = document.getElementById('flavortown-aura');
-      if (existing) existing.remove();
-      document.body.appendChild(aura);
+      document.body.classList.remove('kawaii');
+      document.body.classList.add('medieval');
     }
 
     function applyKawaii() {
-      document.body.classList.remove('flavortown-medieval');
-      document.body.classList.add('flavortown-kawaii');
-      
-      const aura = document.createElement('div');
-      aura.className = 'flavortown-aura';
-      aura.id = 'flavortown-aura';
-      const existing = document.getElementById('flavortown-aura');
-      if (existing) existing.remove();
-      document.body.appendChild(aura);
+      document.body.classList.remove('medieval');
+      document.body.classList.add('kawaii');
     }
 
     function resetTheme() {
-      document.body.classList.remove('flavortown-medieval', 'flavortown-kawaii');
-      const aura = document.getElementById('flavortown-aura');
-      if (aura) aura.remove();
+      document.body.classList.remove('medieval', 'kawaii');
     }
   </script>
 </body>
