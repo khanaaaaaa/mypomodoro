@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pasta's Pomodoro - Demo</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      line-height: 1.6;
+      padding: 40px 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      font-size: 48px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    h2 {
+      font-size: 32px;
+      margin: 40px 0 20px;
+    }
+
+    h3 {
+      font-size: 24px;
+      margin: 30px 0 15px;
+    }
+
+    p {
+      margin-bottom: 15px;
+      font-size: 18px;
+    }
+
+    .demo-controls {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+      z-index: 1000;
+    }
+
+    .demo-controls h3 {
+      margin: 0 0 15px 0;
+      font-size: 18px;
+    }
+
+    .demo-controls button {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+
+    .medieval-btn {
+      background: #8b7355;
+      color: white;
+    }
+
+    .medieval-btn:hover {
+      background: #6d5a43;
+    }
+
+    .kawaii-btn {
+      background: #ff69b4;
+      color: white;
+    }
+
+    .kawaii-btn:hover {
+      background: #ff1493;
+    }
+
+    .reset-btn {
+      background: #dc3545;
+      color: white;
+    }
+
+    .reset-btn:hover {
+      background: #c82333;
+    }
+
+    .content {
+      background: white;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .feature-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .feature-list li {
+      padding: 10px 0;
+      border-bottom: 1px solid #eee;
+    }
+
+    .feature-list li:last-child {
+      border-bottom: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="demo-controls">
+    <h3>Try Themes</h3>
+    <button class="medieval-btn" onclick="applyMedieval()">🏰 Medieval</button>
+    <button class="kawaii-btn" onclick="applyKawaii()">🌸 Kawaii</button>
+    <button class="reset-btn" onclick="resetTheme()">Reset</button>
+  </div>
+
+  <div class="content">
+    <h1>Pasta's Pomodoro Extension</h1>
+    
+    <p>Transform your browsing experience with themed styles and stay productive with our built-in Pomodoro timer.</p>
+
+    <h2>Features</h2>
+    <ul class="feature-list">
+      <li>🏰 Medieval Theme - Parchment backgrounds and royal proclamations</li>
+      <li>🌸 Kawaii Theme - Cute pink aesthetics and anime vibes</li>
+      <li>⏱️ Pomodoro Timer - 25-minute focus sessions</li>
+      <li>🎨 Mood Modifiers - Adventurous, Nostalgic, Mysterious, Energetic</li>
+      <li>🎲 Random Adventure - Surprise theme combinations</li>
+    </ul>
+
+    <h2>How It Works</h2>
+    <p>Click the extension icon in your browser toolbar to open the popup. Choose between the Timer tab for productivity tracking or the Transform tab to apply themes to any webpage.</p>
+
+    <h3>Medieval Theme</h3>
+    <p>Transport yourself to a time of knights and castles. The Medieval theme applies parchment-style backgrounds, serif fonts, and a warm brown color scheme to any webpage you visit.</p>
+
+    <h3>Kawaii Theme</h3>
+    <p>Embrace the cuteness! The Kawaii theme transforms pages with soft pink backgrounds, rounded corners, and playful anime-inspired styling that makes browsing more fun.</p>
+
+    <h2>Installation</h2>
+    <p>Download the extension from the Chrome Web Store or load it manually in developer mode. Once installed, click the extension icon to start transforming your web experience.</p>
+  </div>
+
+  <link rel="stylesheet" href="dist/content.css">
+  <script src="dist/content.js"></script>
+  <script>
+    function applyMedieval() {
+      document.body.classList.remove('flavortown-kawaii');
+      document.body.classList.add('flavortown-medieval');
+      
+      const aura = document.createElement('div');
+      aura.className = 'flavortown-aura';
+      aura.id = 'flavortown-aura';
+      const existing = document.getElementById('flavortown-aura');
+      if (existing) existing.remove();
+      document.body.appendChild(aura);
+    }
+
+    function applyKawaii() {
+      document.body.classList.remove('flavortown-medieval');
+      document.body.classList.add('flavortown-kawaii');
+      
+      const aura = document.createElement('div');
+      aura.className = 'flavortown-aura';
+      aura.id = 'flavortown-aura';
+      const existing = document.getElementById('flavortown-aura');
+      if (existing) existing.remove();
+      document.body.appendChild(aura);
+    }
+
+    function resetTheme() {
+      document.body.classList.remove('flavortown-medieval', 'flavortown-kawaii');
+      const aura = document.getElementById('flavortown-aura');
+      if (aura) aura.remove();
+    }
+  </script>
+</body>
+</html>

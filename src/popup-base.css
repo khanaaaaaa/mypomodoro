@@ -6,9 +6,9 @@
 
 body {
   width: 380px;
-  min-height: 500px;
+  height: 500px;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background: #ffffff;
+  background: #ffffff !important;
   overflow: hidden;
   color: #333;
 }
@@ -16,6 +16,9 @@ body {
 #root {
   width: 100%;
   height: 100%;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
 }
 
 .loading {

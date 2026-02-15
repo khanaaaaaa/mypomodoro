@@ -352,12 +352,12 @@ const Popup: React.FC = () => {
           )}
 
           {currentTab === 'pomodoro' && (
-            <div style={{ textAlign: 'center', padding: '20px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', flex: 1, padding: '20px' }}>
               <h3 className="timer-title">Pomodoro Timer</h3>
               <div className="timer-display">
                 {formatTime(pomodoroTime)}
               </div>
-              <div style={{ display: 'flex', gap: '10px', justifyContent: 'center' }}>
+              <div style={{ display: 'flex', gap: '10px', justifyContent: 'center', marginBottom: '20px' }}>
                 {!pomodoroRunning ? (
                   <button className="btn-primary" style={{ padding: '10px 20px' }} onClick={startPomodoro}>
                     Start
@@ -373,7 +373,7 @@ const Popup: React.FC = () => {
               </div>
               <button 
                 className="btn-primary" 
-                style={{ marginTop: '20px', width: '100%' }}
+                style={{ width: '100%' }}
                 onClick={async () => {
                   try {
                     const tabs = await new Promise<chrome.tabs.Tab[]>((resolve) => {
