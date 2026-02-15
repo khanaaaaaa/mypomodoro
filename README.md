@@ -2,6 +2,8 @@
 
 A Chrome extension that transforms web pages with themed styles and includes a Pomodoro timer for productivity.
 
+[Try the Demo](https://khanaaaaaa.github.io/Pomodoro-x-Themes/demo.html)
+
 ## Features
 
 - Theme Transformation: Apply Medieval or Kawaii themes to any webpage

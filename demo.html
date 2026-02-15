@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pasta's Pomodoro - Demo</title>
+  <link rel="stylesheet" href="dist/content.css">
   <style>
     * {
       margin: 0;
@@ -17,6 +18,7 @@
       padding: 40px 20px;
       max-width: 1200px;
       margin: 0 auto;
+      transition: all 0.5s ease;
     }
 
     h1 {
@@ -49,6 +51,7 @@
       border-radius: 12px;
       box-shadow: 0 4px 20px rgba(0,0,0,0.2);
       z-index: 1000;
+      min-width: 200px;
     }
 
     .demo-controls h3 {
@@ -59,7 +62,7 @@
     .demo-controls button {
       display: block;
       width: 100%;
-      padding: 10px;
+      padding: 12px;
       margin-bottom: 10px;
       border: none;
       border-radius: 6px;
@@ -76,6 +79,7 @@
 
     .medieval-btn:hover {
       background: #6d5a43;
+      transform: translateY(-2px);
     }
 
     .kawaii-btn {
@@ -85,6 +89,7 @@
 
     .kawaii-btn:hover {
       background: #ff1493;
+      transform: translateY(-2px);
     }
 
     .reset-btn {
@@ -94,6 +99,23 @@
 
     .reset-btn:hover {
       background: #c82333;
+      transform: translateY(-2px);
+    }
+
+    .github-link {
+      display: block;
+      text-align: center;
+      padding: 10px;
+      background: #24292e;
+      color: white;
+      text-decoration: none;
+      border-radius: 6px;
+      margin-top: 15px;
+      font-size: 14px;
+    }
+
+    .github-link:hover {
+      background: #1a1e22;
     }
 
     .content {
@@ -101,6 +123,7 @@
       padding: 40px;
       border-radius: 12px;
       box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      transition: all 0.5s ease;
     }
 
     .feature-list {
@@ -109,12 +132,33 @@
     }
 
     .feature-list li {
-      padding: 10px 0;
-      border-bottom: 1px solid #eee;
+      padding: 15px;
+      margin: 10px 0;
+      background: #f8f9fa;
+      border-radius: 8px;
+      border-left: 4px solid #007bff;
     }
 
-    .feature-list li:last-child {
-      border-bottom: none;
+    .install-steps {
+      background: #f8f9fa;
+      padding: 20px;
+      border-radius: 8px;
+      margin: 20px 0;
+    }
+
+    .install-steps ol {
+      margin-left: 20px;
+    }
+
+    .install-steps li {
+      margin: 10px 0;
+    }
+
+    code {
+      background: #e9ecef;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: 'Courier New', monospace;
     }
   </style>
 </head>
@@ -124,37 +168,51 @@
     <button class="medieval-btn" onclick="applyMedieval()">🏰 Medieval</button>
     <button class="kawaii-btn" onclick="applyKawaii()">🌸 Kawaii</button>
     <button class="reset-btn" onclick="resetTheme()">Reset</button>
+    <a href="https://github.com/khanaaaaaa/Pomodoro-x-Themes" class="github-link" target="_blank">View on GitHub</a>
   </div>
 
   <div class="content">
-    <h1>Pasta's Pomodoro Extension</h1>
+    <h1>Pasta's Pomodoro</h1>
     
-    <p>Transform your browsing experience with themed styles and stay productive with our built-in Pomodoro timer.</p>
+    <p>Transform your browsing experience with themed styles and stay productive with our built-in Pomodoro timer. Click the theme buttons on the right to see the magic happen!</p>
 
     <h2>Features</h2>
     <ul class="feature-list">
       <li>🏰 Medieval Theme - Parchment backgrounds and royal proclamations</li>
       <li>🌸 Kawaii Theme - Cute pink aesthetics and anime vibes</li>
-      <li>⏱️ Pomodoro Timer - 25-minute focus sessions</li>
+      <li>⏱️ Pomodoro Timer - 25-minute focus sessions with draggable widget</li>
       <li>🎨 Mood Modifiers - Adventurous, Nostalgic, Mysterious, Energetic</li>
       <li>🎲 Random Adventure - Surprise theme combinations</li>
     </ul>
+
+    <h2>Installation</h2>
+    <div class="install-steps">
+      <ol>
+        <li>Clone or download the repository from GitHub</li>
+        <li>Run <code>npm install</code> to install dependencies</li>
+        <li>Run <code>npm run build</code> to create the dist folder</li>
+        <li>Open Chrome and go to <code>chrome://extensions</code></li>
+        <li>Enable "Developer mode" (top right)</li>
+        <li>Click "Load unpacked" and select the <code>dist/</code> folder</li>
+      </ol>
+    </div>
 
     <h2>How It Works</h2>
     <p>Click the extension icon in your browser toolbar to open the popup. Choose between the Timer tab for productivity tracking or the Transform tab to apply themes to any webpage.</p>
 
     <h3>Medieval Theme</h3>
-    <p>Transport yourself to a time of knights and castles. The Medieval theme applies parchment-style backgrounds, serif fonts, and a warm brown color scheme to any webpage you visit.</p>
+    <p>Transport yourself to a time of knights and castles. The Medieval theme applies parchment-style backgrounds, serif fonts, and a warm brown color scheme to any webpage you visit. Perfect for reading historical content or adding a touch of elegance to your browsing.</p>
 
     <h3>Kawaii Theme</h3>
-    <p>Embrace the cuteness! The Kawaii theme transforms pages with soft pink backgrounds, rounded corners, and playful anime-inspired styling that makes browsing more fun.</p>
+    <p>Embrace the cuteness! The Kawaii theme transforms pages with soft pink backgrounds, rounded corners, and playful anime-inspired styling that makes browsing more fun. Ideal for creative work or when you need a mood boost.</p>
 
-    <h2>Installation</h2>
-    <p>Download the extension from the Chrome Web Store or load it manually in developer mode. Once installed, click the extension icon to start transforming your web experience.</p>
+    <h2>Pomodoro Timer</h2>
+    <p>Stay focused with the built-in Pomodoro timer. Set 25-minute work sessions, take breaks, and track your productivity. The timer can be popped out to any webpage and dragged to your preferred position.</p>
+
+    <h2>Tech Stack</h2>
+    <p>Built with React, TypeScript, and Vite. Uses Chrome Extension Manifest V3 for modern browser compatibility.</p>
   </div>
 
-  <link rel="stylesheet" href="dist/content.css">
-  <script src="dist/content.js"></script>
   <script>
     function applyMedieval() {
       document.body.classList.remove('flavortown-kawaii');
