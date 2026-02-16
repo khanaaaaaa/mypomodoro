@@ -1,7 +1,7 @@
 {
-  "name": "Flavortown Time-Travel",
+  "name": "Pasta's Pomodoro",
   "version": "1.0.0",
-  "description": "Transform any webpage into a themed adventure with medieval, retro diner, or space café styles!",
+  "description": "Transform web pages with themed styles and includes a Pomodoro timer for productivity",
   "manifest_version": 3,
   "background": {
     "service_worker": "background.js",
@@ -14,7 +14,7 @@
       "48": "icons/icon48.png",
       "128": "icons/icon128.png"
     },
-    "default_title": "Flavortown Time-Travel"
+    "default_title": "Pasta's Pomodoro"
   },
   "permissions": [
     "storage",
