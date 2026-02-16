@@ -12,6 +12,16 @@ A Chrome extension that transforms web pages with themed styles and includes a P
 
 ## Installation
 
+### Option 1: Download Release (Recommended)
+
+1. Download [pastas-pomodoro-v1.0.0.zip](https://github.com/khanaaaaaa/Pomodoro-x-Themes/releases/download/v1.0.0/pastas-pomodoro-v1.0.0.zip)
+2. Extract the zip file
+3. Open Chrome and go to `chrome://extensions`
+4. Enable "Developer mode" (top right)
+5. Click "Load unpacked" and select the extracted folder
+
+### Option 2: Build from Source
+
 1. Clone or download this repository
 2. Run `npm install` to install dependencies
 3. Run `npm run build` to create the `dist/` folder
