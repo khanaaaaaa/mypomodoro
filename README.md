@@ -2,7 +2,7 @@
 
 A Chrome extension that transforms web pages with themed styles and includes a Pomodoro timer for productivity.
 
-[Try the Demo](https://khanaaaaaa.github.io/Pomodoro-x-Themes/demo.html)
+[Try the Demo](https://github.com/khanaaaaaa/Pomodoro-x-Themes/releases)
 
 ## Features
 
