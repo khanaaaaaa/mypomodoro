@@ -195,6 +195,55 @@
       border-radius: 4px;
       font-family: 'Courier New', monospace;
     }
+
+    .github-banner {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 30px;
+      text-align: center;
+      border-radius: 12px;
+      margin-bottom: 30px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    }
+
+    .github-banner h2 {
+      color: white;
+      margin: 0 0 20px 0;
+      font-size: 36px;
+    }
+
+    .github-banner p {
+      color: white;
+      font-size: 20px;
+      margin: 10px 0;
+    }
+
+    .download-btn {
+      display: inline-block;
+      background: #28a745;
+      color: white;
+      padding: 15px 30px;
+      margin: 10px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 18px;
+      transition: all 0.3s;
+    }
+
+    .download-btn:hover {
+      background: #218838;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+
+    .crx-highlight {
+      background: #ffc107;
+      color: #000;
+      padding: 5px 10px;
+      border-radius: 4px;
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
@@ -210,6 +259,16 @@
   <div class="content">
     <h1>Pasta's Pomodoro</h1>
     
+    <div class="github-banner">
+      <h2>🚀 GitHub Release v1.0.0</h2>
+      <p>📦 Repository: <a href="https://github.com/khanaaaaaa/Pomodoro-x-Themes" target="_blank" style="color: #ffd700; text-decoration: underline;">github.com/khanaaaaaa/Pomodoro-x-Themes</a></p>
+      <p>📥 Download the <span class="crx-highlight">pastas-pomodoro-v1.0.0.crx</span> file below:</p>
+      <div style="margin-top: 20px;">
+        <a href="https://github.com/khanaaaaaa/Pomodoro-x-Themes/releases/download/v1.0.0/pastas-pomodoro-v1.0.0.crx" class="download-btn" download>⬇️ Download .crx File</a>
+        <a href="https://github.com/khanaaaaaa/Pomodoro-x-Themes/releases/tag/v1.0.0" class="download-btn" target="_blank" style="background: #007bff;">🔗 View Release Page</a>
+      </div>
+    </div>
+    
     <p>Transform your browsing experience with themed styles and stay productive with our built-in Pomodoro timer. Click the theme buttons on the right to see the magic happen.</p>
 
     <h2>Features</h2>
@@ -222,6 +281,29 @@
     </ul>
 
     <h2>Installation</h2>
+    
+    <h3>Option 1: Install .crx File (Easiest)</h3>
+    <div class="install-steps">
+      <ol>
+        <li>Download <a href="https://github.com/khanaaaaaa/Pomodoro-x-Themes/releases/download/v1.0.0/pastas-pomodoro-v1.0.0.crx" download>pastas-pomodoro-v1.0.0.crx</a></li>
+        <li>Open Chrome and go to <code>chrome://extensions</code></li>
+        <li>Enable "Developer mode" (top right)</li>
+        <li>Drag and drop the .crx file onto the extensions page</li>
+      </ol>
+    </div>
+
+    <h3>Option 2: Download Release</h3>
+    <div class="install-steps">
+      <ol>
+        <li>Download <a href="https://github.com/khanaaaaaa/Pomodoro-x-Themes/releases/download/v1.0.0/pastas-pomodoro-v1.0.0.zip" download>pastas-pomodoro-v1.0.0.zip</a></li>
+        <li>Extract the zip file</li>
+        <li>Open Chrome and go to <code>chrome://extensions</code></li>
+        <li>Enable "Developer mode" (top right)</li>
+        <li>Click "Load unpacked" and select the extracted folder</li>
+      </ol>
+    </div>
+
+    <h3>Option 3: Build from Source</h3>
     <div class="install-steps">
       <ol>
         <li>Clone or download the repository from GitHub</li>
