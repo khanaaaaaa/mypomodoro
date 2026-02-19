@@ -396,7 +396,7 @@ const Popup: React.FC = () => {
               >
                 Pop Out to Page
               </button>
-            </div>
+                          </div>
           )}
         </div>
       </div>

@@ -171,6 +171,26 @@ body.flavortown-kawaii .flavortown-aura {
   -ms-user-select: none;
 }
 
+@media (prefers-color-scheme: dark) {
+  .productivity-widget {
+    background: rgba(30, 30, 30, 0.95);
+    border-color: #555;
+  }
+  
+  .productivity-widget h3 {
+    color: #e0e0e0 !important;
+  }
+  
+  .productivity-widget .goal {
+    background: #2d2d2d !important;
+    color: #e0e0e0 !important;
+  }
+  
+  .productivity-widget .timer {
+    color: #d4af37 !important;
+  }
+}
+
 body.flavortown-medieval .productivity-widget {
   background: rgba(244, 232, 208, 0.95);
   border-color: #8b7355;
@@ -269,11 +289,10 @@ body.flavortown-kawaii .productivity-widget .control-btn:hover {
   font-weight: 600;
 }
 
-.productivity-widget .close-btn,
-.productivity-widget .minimize-btn,
-.productivity-widget .popout-btn {
+.productivity-widget .close-btn {
   position: absolute;
   top: 8px;
+  right: 8px;
   background: none;
   border: none;
   font-size: 20px;
@@ -281,20 +300,6 @@ body.flavortown-kawaii .productivity-widget .control-btn:hover {
   color: #999;
 }
 
-.productivity-widget .close-btn {
-  right: 8px;
-}
-
-.productivity-widget .minimize-btn {
-  right: 35px;
-}
-
-.productivity-widget .popout-btn {
-  right: 62px;
-}
-
-.productivity-widget .close-btn:hover,
-.productivity-widget .minimize-btn:hover,
-.productivity-widget .popout-btn:hover {
+.productivity-widget .close-btn:hover {
   color: #333;
 }

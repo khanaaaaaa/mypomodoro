@@ -16,6 +16,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       showProductivityWidget();
       sendResponse({ success: true });
     }
+
   } catch (error) {
     console.error('Error processing message:', error);
     sendResponse({ success: false, error: String(error) });
@@ -46,6 +47,7 @@ function initializeTransformation() {
       }
       
       showProductivityWidget();
+
     } catch (error) {
       console.error('Error initializing content script:', error);
     }
@@ -197,8 +199,6 @@ function showProductivityWidget() {
   const widget = document.createElement('div');
   widget.className = 'productivity-widget';
   widget.innerHTML = `
-    <button class="popout-btn" title="Pop Out">⛶</button>
-    <button class="minimize-btn" title="Minimize">−</button>
     <button class="close-btn" title="Close">×</button>
     <div class="widget-content">
       <h3>Productivity Boost</h3>
@@ -296,18 +296,6 @@ function showProductivityWidget() {
     updateTimer();
     startBtn.style.display = 'inline-block';
     stopBtn.style.display = 'none';
-  });
-  
-  widget.querySelector('.minimize-btn').addEventListener('click', () => {
-    widget.classList.toggle('minimized');
-  });
-  
-  widget.querySelector('.popout-btn').addEventListener('click', () => {
-    if (interval) clearInterval(interval);
-    widget.remove();
-    chrome.storage.local.set({ 
-      pomodoroState: { timeLeft, isRunning, goal: randomGoal }
-    });
   });
   
   widget.querySelector('.close-btn').addEventListener('click', () => {
