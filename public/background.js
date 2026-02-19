@@ -17,10 +17,6 @@ const DEFAULT_STORAGE = {
     moodUsage: { adventurous: 0, nostalgic: 0, mysterious: 0, energetic: 0 },
     uniqueCombos: 0,
     lastPlayDate: 0,
-    currentStreak: 0,
-    longestStreak: 0,
-    dailyChallengesCompleted: 0,
-    totalFriesCollected: 0,
     sessionStartTime: Date.now(),
     transformationsInSession: 0
   },
