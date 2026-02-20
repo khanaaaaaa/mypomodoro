@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flavortown</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    html, body {
+      width: 380px;
+      min-height: 550px;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #FFB6D9 0%, #FFAED7 25%, #FFC1E0 50%, #E5B8F4 75%, #C9A9E9 100%);
+      overflow-x: hidden;
+    }
+
+    body {
+      padding: 15px;
+    }
+
+    #app {
+      color: #2d1f1a;
+    }
+
+    h1 {
+      font-size: 28px;
+      margin-bottom: 5px;
+    }
+
+    .subtitle {
+      font-size: 12px;
+      color: #666;
+      margin-bottom: 15px;
+    }
+
+    .section-title {
+      font-size: 13px;
+      font-weight: 600;
+      margin-top: 12px;
+      margin-bottom: 8px;
+    }
+
+    .button-group {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .mood-btn {
+      padding: 10px;
+      border: 2px solid #d4c5b0;
+      background: white;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 11px;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+
+    .mood-btn:hover {
+      border-color: #8b7355;
+      background: #f9f5f1;
+    }
+
+    .mood-btn.active {
+      background: #8b7355;
+      color: white;
+    }
+
+    .era-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .era-btn {
+      padding: 10px;
+      border: 2px solid #d4c5b0;
+      background: white;
+      border-radius: 6px;
+      cursor: pointer;
+      text-align: left;
+      font-size: 12px;
+      transition: all 0.2s;
+    }
+
+    .era-btn:hover {
+      border-color: #8b7355;
+      background: #f9f5f1;
+    }
+
+    .era-btn.active {
+      background: #8b7355;
+      color: white;
+    }
+
+    .random-btn {
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(135deg, #ff6b9d 0%, #d4af37 100%);
+      border: none;
+      border-radius: 6px;
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      margin-bottom: 10px;
+    }
+
+    .random-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+
+    .status {
+      text-align: center;
+      font-size: 11px;
+      color: #8b7355;
+      padding: 8px;
+      min-height: 16px;
+    }
+
+    .points {
+      text-align: center;
+      font-size: 13px;
+      font-weight: 600;
+      color: #d4af37;
+      padding: 10px;
+      background: rgba(212, 175, 55, 0.1);
+      border-radius: 6px;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <h1>🏰 Flavortown</h1>
+    <div class="subtitle">Time-Travel Chronicles</div>
+
+    <div class="section-title">Select Thy Mood</div>
+    <div class="button-group" id="moods">Loading...</div>
+
+    <div class="section-title">Choose Thine Era</div>
+    <div class="era-buttons" id="eras">Loading...</div>
+
+    <button class="random-btn" id="random">🎲 Random Adventure</button>
+    <div class="status" id="status">Ready</div>
+    <div class="points">🍟 Fries: <span id="points">0</span></div>
+  </div>
+
+  <script>
+    (function() {
+      const ERAS = [
+        { id: 'medieval', name: 'Medieval Feast', icon: '🏰' },
+        { id: 'diner', name: 'Retro Diner 1950s', icon: '🍔' },
+        { id: 'space', name: 'Futuristic Space', icon: '🚀' }
+      ];
+
+      const MOODS = [
+        { id: 'adventurous', name: 'Adventurous', icon: '⚔️' },
+        { id: 'nostalgic', name: 'Nostalgic', icon: '🕰️' },
+        { id: 'mysterious', name: 'Mysterious', icon: '🔮' },
+        { id: 'energetic', name: 'Energetic', icon: '⚡' }
+      ];
+
+      let state = {
+        era: '',
+        mood: '',
+        points: 0
+      };
+
+      function render() {
+        // Render moods
+        const moodsEl = document.getElementById('moods');
+        moodsEl.innerHTML = '';
+        MOODS.forEach(mood => {
+          const btn = document.createElement('button');
+          btn.className = 'mood-btn' + (state.mood === mood.id ? ' active' : '');
+          btn.textContent = mood.icon + ' ' + mood.name;
+          btn.onclick = () => {
+            state.mood = mood.id;
+            chrome.storage.local.set({ currentMood: mood.id });
+            render();
+          };
+          moodsEl.appendChild(btn);
+        });
+
+        // Render eras
+        const erasEl = document.getElementById('eras');
+        erasEl.innerHTML = '';
+        ERAS.forEach(era => {
+          const btn = document.createElement('button');
+          btn.className = 'era-btn' + (state.era === era.id ? ' active' : '');
+          btn.textContent = era.icon + ' ' + era.name;
+          btn.onclick = () => applyEra(era.id, state.mood);
+          erasEl.appendChild(btn);
+        });
+      }
+
+      function applyEra(era, mood) {
+        state.era = era;
+        document.getElementById('status').textContent = 'Applying...';
+
+        chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+          const tab = tabs[0];
+          if (!tab?.id) {
+            document.getElementById('status').textContent = 'No tab';
+            return;
+          }
+
+          chrome.storage.local.set({ currentEra: era, currentMood: mood });
+
+          chrome.tabs.sendMessage(tab.id, { action: 'applyEra', era, mood }, (response) => {
+            if (chrome.runtime.lastError) {
+              // Try injecting
+              chrome.scripting.executeScript({
+                target: { tabId: tab.id },
+                files: ['content.js']
+              }, () => {
+                setTimeout(() => {
+                  chrome.tabs.sendMessage(tab.id, { action: 'applyEra', era, mood }, () => {
+                    document.getElementById('status').textContent = 'Transformed!';
+                    render();
+                  });
+                }, 100);
+              });
+            } else {
+              document.getElementById('status').textContent = 'Transformed!';
+              render();
+            }
+          });
+        });
+      }
+
+      // Load state
+      chrome.storage.local.get(['currentMood', 'currentEra', 'points'], (data) => {
+        if (data.currentMood) state.mood = data.currentMood;
+        if (data.currentEra) state.era = data.currentEra;
+        if (data.points) {
+          state.points = data.points;
+          document.getElementById('points').textContent = state.points;
+        }
+        render();
+      });
+
+      // Listen for messages
+      chrome.runtime.onMessage.addListener((message) => {
+        if (message.action === 'updatePoints') {
+          chrome.storage.local.get(['points'], (data) => {
+            state.points = data.points || 0;
+            document.getElementById('points').textContent = state.points;
+          });
+        }
+      });
+
+      // Random button
+      document.getElementById('random').onclick = () => {
+        const randomEra = ERAS[Math.floor(Math.random() * ERAS.length)];
+        const randomMood = MOODS[Math.floor(Math.random() * MOODS.length)];
+        state.era = randomEra.id;
+        state.mood = randomMood.id;
+        applyEra(randomEra.id, randomMood.id);
+        chrome.storage.local.set({ randomMode: true });
+      };
+    })();
+  </script>
+</body>
+</html>
