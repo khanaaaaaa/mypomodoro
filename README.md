@@ -4,11 +4,22 @@ A Chrome extension that transforms web pages with themed styles and includes a P
 
 [Try the Demo](https://github.com/khanaaaaaa/Pomodoro-x-Themes/releases)
 
+## Update
+
+Recent enhancements to the Pomodoro timer widget include improved visual design and expanded functionality. The timer text now displays in white across all themes for better readability. The medieval theme has been updated with lighter, more refined color tones. Dark mode styling has been removed to maintain consistent appearance across different system preferences.
+
+New productivity features have been added to the timer widget. A session counter tracks completed focus periods throughout your work session. The timer now automatically alternates between 25-minute focus sessions and 5-minute break periods. A visual progress bar provides real-time feedback on remaining time. Users can skip between focus and break sessions using the new skip button. Audio notifications alert users when transitioning between modes.
+
 ## Features
 
 - Theme Transformation: Apply Medieval or Kawaii themes to any webpage
 - Mood Modifiers: Choose from Adventurous, Nostalgic, Mysterious, or Energetic moods
 - Pomodoro Timer: Built-in 25-minute focus timer with draggable widget
+- Session Tracking: Monitor completed focus sessions with automatic session counter
+- Break Management: Automatic 5-minute breaks after each focus session
+- Progress Visualization: Real-time progress bar showing time remaining
+- Session Control: Skip between focus and break periods as needed
+- Audio Notifications: Sound alerts when switching between modes
 
 ## Installation
 
