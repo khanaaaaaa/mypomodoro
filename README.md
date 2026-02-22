@@ -64,9 +64,50 @@ dist/
 
 ## Themes
 
-Medieval: Parchment background, serif fonts, brown color scheme
+### Medieval Feast
+Transforms webpages into ancient parchment scrolls with a royal aesthetic.
+- Background: Warm parchment color with subtle texture pattern
+- Typography: Crimson Text and Garamond serif fonts
+- Color Scheme: Rich browns and warm earth tones
+- Special Effects: Sword emojis on headings, medieval vocabulary injections
+- Widget Style: Lighter tan gradient header with refined brown buttons
 
-Kawaii: Pink background, rounded corners, cute anime aesthetic
+### Kawaii Dreamscape
+Brings cute anime aesthetics with playful pink tones to any webpage.
+- Background: Light pink with decorative dot patterns
+- Typography: Comic Sans MS with emoji support
+- Color Scheme: Hot pink, light pink, and purple accents
+- Special Effects: Sparkle emojis on headings, random cute emoji injections
+- Widget Style: Pink gradient header with vibrant pink buttons
+- Visual Features: Rounded corners on all buttons
+
+### Nature Forest
+Creates a calming green environment inspired by natural landscapes.
+- Background: Soft green with subtle leaf patterns
+- Typography: Georgia serif fonts
+- Color Scheme: Various shades of green from light to forest
+- Special Effects: Leaf emojis on headings, nature-themed emoji injections
+- Widget Style: Green gradient header with nature-toned buttons
+
+## Mood Modifiers
+
+Mood modifiers alter the typography and font styling across all themes:
+
+### Adventurous
+- Font: Impact and Arial Black
+- Style: Bold weight for dramatic emphasis
+
+### Nostalgic
+- Font: Georgia and Times New Roman
+- Style: Italic formatting for classic feel
+
+### Mysterious
+- Font: Garamond and Palatino
+- Style: Increased letter spacing for enigmatic appearance
+
+### Energetic
+- Font: Verdana and Trebuchet MS
+- Style: Semi-bold weight for dynamic presence
 
 ## License
 
