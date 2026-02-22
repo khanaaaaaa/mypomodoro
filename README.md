@@ -21,10 +21,17 @@ New productivity features have been added to the timer widget. A session counter
 
 ## Installation
 
-1. Download [pastas-pomodoro-v1.0.0.crx](https://github.com/khanaaaaaa/mypomodoro/releases/download/v1.0.0/pastas-pomodoro-v1.0.0.crx)
+1. Download [pastapomodoro.crx](https://github.com/khanaaaaaa/mypomodoro/releases/tag/v1) ##OR
 2. Open Chrome and go to `chrome://extensions`
 3. Enable "Developer mode" (top right)
 4. Drag and drop the .crx file onto the extensions page
+   ##OR
+1. Download [pastapomodoro.zip](https://github.com/khanaaaaaa/mypomodoro/releases/tag/v1)
+2. Unzip the folder
+3. Open Chrome and go to `chrome://extensions`
+4.  Enable "Developer mode" (top right)
+5.  Press on "Load Unpacked" (top left)
+6.  And select the unzipped 'pastapomodoro' folder 
 
 ## Usage
 
