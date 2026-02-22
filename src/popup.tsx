@@ -2,8 +2,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any, react-hooks/set-state-in-effect */
 import React, { useState, useEffect } from 'react';
 import './popup.css';
-import { recordTransformation, DEFAULT_STATS } from './stats';
-import { playTransformSound, playSuccessSound } from './soundEffects';
+import './popup-compact.css';
 
 interface EraConfig {
   id: string;
@@ -20,7 +19,8 @@ interface MoodConfig {
 
 const ERAS: EraConfig[] = [
   { id: 'medieval', name: 'Medieval Feast', icon: '🏰', description: 'Parchment scrolls & royal proclamations' },
-  { id: 'kawaii', name: 'Kawaii Dreamscape', icon: '🌸', description: 'Light pink background & cute anime vibes' }
+  { id: 'kawaii', name: 'Kawaii Dreamscape', icon: '🌸', description: 'Light pink background & cute anime vibes' },
+  { id: 'nature', name: 'Nature Forest', icon: '🌿', description: 'Green tones & calming leaf patterns' }
 ];
 
 const MOODS: MoodConfig[] = [
@@ -44,73 +44,38 @@ const Popup: React.FC = () => {
   const [pomodoroTime, setPomodoroTime] = useState<number>(25 * 60);
   const [pomodoroRunning, setPomodoroRunning] = useState<boolean>(false);
   const [pomodoroInterval, setPomodoroInterval] = useState<number | null>(null);
+  const [breakTime, setBreakTime] = useState<number>(5 * 60);
+  const [isBreak, setIsBreak] = useState<boolean>(false);
 
   useEffect(() => {
-    // Initialize all missing data in storage
     const initializeStorage = async () => {
-      chrome.storage.local.get(null, (allData: any) => {
-        const toSet: any = {};
-
-        // Ensure stats exists
-        if (!allData.stats) {
-          toSet.stats = DEFAULT_STATS;
-        }
-
-        // Ensure achievements array exists
-        if (!allData.achievements) {
-          toSet.achievements = [];
-        }
-
-        // Ensure dailyChallenge exists  
-        if (!allData.dailyChallenge) {
-          toSet.dailyChallenge = null;
-        }
-
-        // Ensure customThemes array exists
-        if (!allData.customThemes) {
-          toSet.customThemes = [];
-        }
-
-        // Ensure basic fields exist
-        if (allData.points === undefined) {
-          toSet.points = 0;
-        }
-        if (!allData.currentEra) {
-          toSet.currentEra = 'medieval';
-        }
-        if (!allData.currentMood) {
-          toSet.currentMood = 'adventurous';
-        }
-
-        // Set all missing values at once
-        if (Object.keys(toSet).length > 0) {
-          chrome.storage.local.set(toSet);
-        }
-
-        // Load current state
-        chrome.storage.local.get(['currentEra', 'currentMood'], (data: any) => {
-          if (data.currentEra) setSelectedEra(data.currentEra);
-          if (data.currentMood) setSelectedMood(data.currentMood);
+      chrome.storage.local.get(['currentEra', 'currentMood'], (data: any) => {
+        if (data.currentEra) {
+          setSelectedEra(data.currentEra);
           updatePopupTheme(data.currentEra);
-        });
+        }
+        if (data.currentMood) {
+          setSelectedMood(data.currentMood);
+        }
       });
     };
 
     initializeStorage();
 
-    // Listen for storage changes and update UI
     const handleStorageChange = (changes: any, area: string) => {
       if (area === 'local') {
         if (changes.currentEra) {
-          setSelectedEra(changes.currentEra.newValue || 'medieval');
-          updatePopupTheme(changes.currentEra.newValue);
+          const newEra = changes.currentEra.newValue || '';
+          setSelectedEra(newEra);
+          updatePopupTheme(newEra);
         }
-        if (changes.currentMood) setSelectedMood(changes.currentMood.newValue || 'adventurous');
+        if (changes.currentMood) {
+          setSelectedMood(changes.currentMood.newValue || '');
+        }
       }
     };
     chrome.storage.onChanged.addListener(handleStorageChange);
 
-    // Set up keyboard shortcuts
     const handleKeyPress = (e: KeyboardEvent) => {
       if (e.ctrlKey || e.metaKey) {
         if (e.key === '1') { setCurrentTab('pomodoro'); e.preventDefault(); }
@@ -118,18 +83,9 @@ const Popup: React.FC = () => {
       }
     };
     window.addEventListener('keydown', handleKeyPress);
-
-    // Listen for messages
-    const handleMessage = (message: any) => {
-      if (message.action === 'updatePoints') {
-        // No-op
-      }
-    };
     
-    chrome.runtime.onMessage.addListener(handleMessage);
     return () => {
       chrome.storage.onChanged.removeListener(handleStorageChange);
-      chrome.runtime.onMessage.removeListener(handleMessage);
       window.removeEventListener('keydown', handleKeyPress);
     };
   }, []);
@@ -137,18 +93,12 @@ const Popup: React.FC = () => {
   const updatePopupTheme = (era: string) => {
     const container = document.querySelector('.popup-container');
     if (container) {
-      container.classList.remove('theme-medieval', 'theme-kawaii');
+      container.classList.remove('theme-medieval', 'theme-kawaii', 'theme-nature');
       if (era) container.classList.add(`theme-${era}`);
     }
   };
 
   const applyEra = async (era: string, mood: string) => {
-    try {
-      playTransformSound();
-    } catch (e) {
-      console.error('Sound error:', e);
-    }
-
     const tabs = await new Promise<chrome.tabs.Tab[]>((resolve) => {
       chrome.tabs.query({ active: true, currentWindow: true }, resolve);
     });
@@ -164,25 +114,19 @@ const Popup: React.FC = () => {
     try {
       await chrome.tabs.sendMessage(tab.id, { action: 'applyEra', era, mood });
     } catch {
-      await chrome.scripting.executeScript({ target: { tabId: tab.id }, files: ['content.js'] });
-      await new Promise(r => setTimeout(r, 150));
-      await chrome.tabs.sendMessage(tab.id, { action: 'applyEra', era, mood });
-    }
-
-    try {
-      await recordTransformation(era, mood, 0);
-    } catch (e) {
-      console.error('Stats error:', e);
+      try {
+        await chrome.scripting.executeScript({ target: { tabId: tab.id }, files: ['content.js'] });
+        await new Promise(r => setTimeout(r, 100));
+        await chrome.tabs.sendMessage(tab.id, { action: 'applyEra', era, mood });
+      } catch (e) {
+        console.error('Failed to apply theme:', e);
+        setStatus('Error applying theme');
+        return;
+      }
     }
 
     const eraName = ERAS.find(e => e.id === era)?.name || era;
     setStatus(`Transformed into ${eraName}!`);
-
-    try {
-      playSuccessSound();
-    } catch (e) {
-      console.error('Sound error:', e);
-    }
   };
 
   const handleEraClick = async (eraId: string) => {
@@ -196,7 +140,9 @@ const Popup: React.FC = () => {
       await chrome.storage.local.set({ currentMood: moodId });
       await applyEra(selectedEra, moodId);
     } else {
-      setStatus('Please select an era first!');
+      const randomEra = pickRandom(ERAS);
+      setSelectedEra(randomEra.id);
+      await applyEra(randomEra.id, moodId);
     }
   };
 
@@ -206,7 +152,6 @@ const Popup: React.FC = () => {
     setSelectedEra(randomEra.id);
     setSelectedMood(randomMood.id);
     await applyEra(randomEra.id, randomMood.id);
-    await chrome.storage.local.set({ randomMode: true });
   };
 
   const handleStopEffects = async () => {
@@ -220,18 +165,25 @@ const Popup: React.FC = () => {
       return;
     }
 
-    try {
-      await chrome.tabs.sendMessage(tab.id, { action: 'stopEffects' });
-    } catch {
-      await chrome.scripting.executeScript({ target: { tabId: tab.id }, files: ['content.js'] });
-      await new Promise(r => setTimeout(r, 150));
-      await chrome.tabs.sendMessage(tab.id, { action: 'stopEffects' });
-    }
-
     setSelectedEra('');
     setSelectedMood('');
-    setStatus('All effects stopped');
-    await chrome.storage.local.set({ currentEra: '', currentMood: '', randomMode: false });
+    await chrome.storage.local.set({ currentEra: '', currentMood: '' });
+    updatePopupTheme('');
+
+    try {
+      await chrome.tabs.sendMessage(tab.id, { action: 'stopEffects' });
+      setStatus('All effects stopped');
+    } catch {
+      try {
+        await chrome.scripting.executeScript({ target: { tabId: tab.id }, files: ['content.js'] });
+        await new Promise(r => setTimeout(r, 100));
+        await chrome.tabs.sendMessage(tab.id, { action: 'stopEffects' });
+        setStatus('All effects stopped');
+      } catch (e) {
+        console.error('Failed to stop effects:', e);
+        setStatus('Error stopping effects');
+      }
+    }
   };
 
 
@@ -268,6 +220,23 @@ const Popup: React.FC = () => {
     }
     setPomodoroRunning(false);
     setPomodoroTime(25 * 60);
+    setIsBreak(false);
+  };
+
+  const startBreak = () => {
+    setIsBreak(true);
+    setBreakTime(5 * 60);
+    const interval = window.setInterval(() => {
+      setBreakTime(prev => {
+        if (prev <= 1) {
+          window.clearInterval(interval);
+          setIsBreak(false);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+    setPomodoroInterval(interval);
   };
 
   const formatTime = (seconds: number) => {
@@ -291,14 +260,14 @@ const Popup: React.FC = () => {
             onClick={() => setCurrentTab('pomodoro')}
             title="Ctrl+1"
           >
-            Timer
+            ⏱️ Timer
           </button>
           <button
             className={`tab-btn ${currentTab === 'transform' ? 'active' : ''}`}
             onClick={() => setCurrentTab('transform')}
             title="Ctrl+2"
           >
-            Transform
+            ✨ Transform
           </button>
         </div>
 
@@ -306,7 +275,7 @@ const Popup: React.FC = () => {
           {currentTab === 'transform' && (
             <>
               <div className="mood-section">
-                <div className="section-title">Select Thy Mood</div>
+                <div className="section-title">Mood</div>
                 <div className="mood-buttons">
                   {MOODS.map(mood => (
                     <button
@@ -320,30 +289,26 @@ const Popup: React.FC = () => {
                 </div>
               </div>
 
-              <div className="section-title">Choose Thine Era</div>
-              <div className="era-buttons">
+              <div className="section-title">Theme</div>
+              <div className="theme-grid">
                 {ERAS.map(era => (
                   <button
                     key={era.id}
-                    className={`era-btn ${selectedEra === era.id ? 'active' : ''}`}
+                    className={`theme-card ${selectedEra === era.id ? 'active' : ''}`}
                     onClick={() => handleEraClick(era.id)}
                   >
-                    <span className="era-icon">{era.icon}</span>
-                    <div className="era-content">
-                      <div className="era-title">{era.name}</div>
-                      <div className="era-desc">{era.description}</div>
-                    </div>
+                    <div className="theme-icon">{era.icon}</div>
+                    <div className="theme-name">{era.name}</div>
                   </button>
                 ))}
               </div>
 
-              <div style={{ display: 'flex', gap: '10px', marginTop: '20px' }}>
+              <div style={{ display: 'flex', gap: '8px', marginTop: '12px' }}>
                 <button className="random-btn" style={{ flex: 1, margin: 0 }} onClick={handleRandomClick}>
-                  Random Adventure
+                  🎲 Random
                 </button>
-
                 <button className="stop-btn" style={{ flex: 1, margin: 0 }} onClick={handleStopEffects}>
-                  Stop All Effects
+                  ⛔ Stop
                 </button>
               </div>
 
@@ -352,51 +317,50 @@ const Popup: React.FC = () => {
           )}
 
           {currentTab === 'pomodoro' && (
-            <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', flex: 1, padding: '20px' }}>
-              <h3 className="timer-title">Pomodoro Timer</h3>
-              <div className="timer-display">
-                {formatTime(pomodoroTime)}
-              </div>
-              <div style={{ display: 'flex', gap: '10px', justifyContent: 'center', marginBottom: '20px' }}>
-                {!pomodoroRunning ? (
-                  <button className="btn-primary" style={{ padding: '10px 20px' }} onClick={startPomodoro}>
-                    Start
-                  </button>
-                ) : (
-                  <button className="btn-secondary" style={{ padding: '10px 20px' }} onClick={pausePomodoro}>
-                    Pause
-                  </button>
-                )}
-                <button className="btn-secondary" style={{ padding: '10px 20px' }} onClick={resetPomodoro}>
-                  Reset
-                </button>
-              </div>
-              <button 
-                className="btn-primary" 
-                style={{ width: '100%' }}
-                onClick={async () => {
-                  try {
-                    const tabs = await new Promise<chrome.tabs.Tab[]>((resolve) => {
-                      chrome.tabs.query({ active: true, currentWindow: true }, resolve);
-                    });
-                    
-                    if (tabs[0]?.id) {
+            <div className="pomodoro-container">
+              <div className="pomodoro-content">
+                <div className="pomodoro-main">
+                  <h3 className="timer-title">{isBreak ? '☕ Break' : '⏱️ Focus'}</h3>
+                  <div className="timer-display">
+                    {formatTime(isBreak ? breakTime : pomodoroTime)}
+                  </div>
+                  <div className="timer-controls">
+                    {!pomodoroRunning && !isBreak ? (
+                      <button className="btn-primary" onClick={startPomodoro}>▶ Start</button>
+                    ) : !isBreak ? (
+                      <button className="btn-secondary" onClick={pausePomodoro}>⏸ Pause</button>
+                    ) : null}
+                    <button className="btn-secondary" onClick={resetPomodoro}>↻ Reset</button>
+                    {!isBreak && pomodoroTime === 0 && (
+                      <button className="btn-primary" onClick={startBreak}>☕ Break</button>
+                    )}
+                  </div>
+                  <button 
+                    className="btn-popout" 
+                    onClick={async () => {
                       try {
-                        await chrome.tabs.sendMessage(tabs[0].id, { action: 'showPomodoro' });
-                      } catch {
-                        await chrome.scripting.executeScript({ target: { tabId: tabs[0].id }, files: ['content.js'] });
-                        await new Promise(r => setTimeout(r, 150));
-                        await chrome.tabs.sendMessage(tabs[0].id, { action: 'showPomodoro' });
+                        const tabs = await new Promise<chrome.tabs.Tab[]>((resolve) => {
+                          chrome.tabs.query({ active: true, currentWindow: true }, resolve);
+                        });
+                        if (tabs[0]?.id) {
+                          try {
+                            await chrome.tabs.sendMessage(tabs[0].id, { action: 'showPomodoro' });
+                          } catch {
+                            await chrome.scripting.executeScript({ target: { tabId: tabs[0].id }, files: ['content.js'] });
+                            await new Promise(r => setTimeout(r, 150));
+                            await chrome.tabs.sendMessage(tabs[0].id, { action: 'showPomodoro' });
+                          }
+                        }
+                      } catch (error) {
+                        console.error('Error showing pomodoro:', error);
                       }
-                    }
-                  } catch (error) {
-                    console.error('Error showing pomodoro:', error);
-                  }
-                }}
-              >
-                Pop Out to Page
-              </button>
-                          </div>
+                    }}
+                  >
+                    📌 Pop Out
+                  </button>
+                </div>
+              </div>
+            </div>
           )}
         </div>
       </div>

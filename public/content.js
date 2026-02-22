@@ -1,25 +1,18 @@
 let currentEra = null;
 let currentMood = null;
-let goldenFriesFound = 0;
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  try {
-    if (message && message.action === 'applyEra') {
-      applyEraTransformation(message.era, message.mood);
-      sendResponse({ success: true });
-    }
-    if (message && message.action === 'stopEffects') {
-      stopAllEffects();
-      sendResponse({ success: true });
-    }
-    if (message && message.action === 'showPomodoro') {
-      showProductivityWidget();
-      sendResponse({ success: true });
-    }
-
-  } catch (error) {
-    console.error('Error processing message:', error);
-    sendResponse({ success: false, error: String(error) });
+  if (message && message.action === 'applyEra') {
+    applyEraTransformation(message.era, message.mood);
+    sendResponse({ success: true });
+  }
+  if (message && message.action === 'stopEffects') {
+    stopAllEffects();
+    sendResponse({ success: true });
+  }
+  if (message && message.action === 'showPomodoro') {
+    showProductivityWidget();
+    sendResponse({ success: true });
   }
   return true;
 });
@@ -31,23 +24,16 @@ if (document.readyState === 'loading') {
 }
 
 function initializeTransformation() {
-  chrome.storage.local.get(['currentEra', 'currentMood', 'randomMode'], (data) => {
+  chrome.storage.local.get(['currentEra', 'currentMood'], (data) => {
     if (chrome.runtime.lastError) {
       console.error('Storage error:', chrome.runtime.lastError);
       return;
     }
     
     try {
-      if (data && data.randomMode) {
-        const eras = ['medieval', 'kawaii'];
-        const randomEra = eras[Math.floor(Math.random() * eras.length)];
-        applyEraTransformation(randomEra, data.currentMood || '');
-      } else if (data && data.currentEra) {
+      if (data && data.currentEra) {
         applyEraTransformation(data.currentEra, data.currentMood || '');
       }
-      
-      showProductivityWidget();
-
     } catch (error) {
       console.error('Error initializing content script:', error);
     }
@@ -55,7 +41,9 @@ function initializeTransformation() {
 }
 
 function applyEraTransformation(era, mood) {
-  document.body.classList.remove('flavortown-medieval', 'flavortown-kawaii');
+  if (window.location.href.includes('chrome-extension://')) return;
+  
+  document.body.classList.remove('flavortown-medieval', 'flavortown-kawaii', 'flavortown-nature');
   document.body.classList.remove('flavortown-mood-adventurous', 'flavortown-mood-nostalgic', 'flavortown-mood-mysterious', 'flavortown-mood-energetic');
   removeExistingElements();
   
@@ -68,12 +56,21 @@ function applyEraTransformation(era, mood) {
     document.body.classList.add(`flavortown-mood-${mood}`);
   }
   
+  const existingWidget = document.querySelector('.productivity-widget');
+  if (existingWidget) {
+    existingWidget.className = 'productivity-widget';
+    if (era) existingWidget.classList.add(`theme-${era}`);
+  }
+  
   switch(era) {
     case 'medieval':
       applyMedievalTheme(mood);
       break;
     case 'kawaii':
       applyKawaiTheme(mood);
+      break;
+    case 'nature':
+      applyNatureTheme(mood);
       break;
   }
   
@@ -102,6 +99,19 @@ function applyKawaiTheme(mood) {
     if (!h.getAttribute('data-original')) {
       h.setAttribute('data-original', h.textContent);
       h.textContent = `✨ ${h.textContent} ✨`;
+    }
+  });
+}
+
+function applyNatureTheme(mood) {
+  const natureEmojis = ['🌿', '🌱', '🌻', '🌺', '🌳', '🌾', '🍀', '🍂'];
+  injectRandomEmojis(natureEmojis);
+  
+  const headings = document.querySelectorAll('h1, h2, h3');
+  headings.forEach(h => {
+    if (!h.getAttribute('data-original')) {
+      h.setAttribute('data-original', h.textContent);
+      h.textContent = `🌿 ${h.textContent} 🌿`;
     }
   });
 }
@@ -159,20 +169,13 @@ function removeExistingElements() {
 }
 
 function stopAllEffects() {
-  document.body.classList.remove('flavortown-medieval', 'flavortown-kawaii');
+  document.body.classList.remove('flavortown-medieval', 'flavortown-kawaii', 'flavortown-nature');
   document.body.classList.remove('flavortown-mood-adventurous', 'flavortown-mood-nostalgic', 'flavortown-mood-mysterious', 'flavortown-mood-energetic');
   
   removeExistingElements();
   
-  const widget = document.querySelector('.productivity-widget');
-  if (widget) widget.remove();
-  
-  document.querySelectorAll('a, img').forEach(el => {
-    el.style.textShadow = '';
-    el.style.filter = '';
-    el.style.transition = '';
-    el.style.transform = '';
-  });
+  document.querySelectorAll('.productivity-widget').forEach(w => w.remove());
+  document.querySelectorAll('.flavortown-aura').forEach(a => a.remove());
   
   currentEra = null;
   currentMood = null;
@@ -183,32 +186,21 @@ function stopAllEffects() {
 function showProductivityWidget() {
   if (document.querySelector('.productivity-widget')) return;
   
-  const goals = [
-    'Take a 2-minute stretch break',
-    'Drink a glass of water',
-    'Write down 3 things you\'re grateful for',
-    'Complete one small task',
-    'Take 5 deep breaths',
-    'Look away from screen for 20 seconds',
-    'Check and clear 5 notifications',
-    'Organize one folder on your desktop'
-  ];
-  
-  const randomGoal = goals[Math.floor(Math.random() * goals.length)];
-  
   const widget = document.createElement('div');
   widget.className = 'productivity-widget';
+  if (currentEra) widget.classList.add(`theme-${currentEra}`);
   widget.innerHTML = `
+    <div class="widget-header">Pomodoro Timer</div>
     <button class="close-btn" title="Close">×</button>
     <div class="widget-content">
-      <h3>Productivity Boost</h3>
-      <div class="goal">${randomGoal}</div>
+      <div class="session-info">Session <span id="session-count">1</span> | <span id="mode-label">Focus</span></div>
       <div class="timer" id="pomodoro-timer">25:00</div>
-      <div style="text-align: center; font-size: 12px; color: #666; margin-bottom: 10px;">Pomodoro Timer</div>
+      <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
       <div class="controls">
         <button class="control-btn" id="start-btn">Start</button>
         <button class="control-btn" id="stop-btn" style="display:none;">Pause</button>
         <button class="control-btn" id="reset-btn">Reset</button>
+        <button class="control-btn" id="skip-btn">Skip</button>
       </div>
     </div>
   `;
@@ -221,12 +213,12 @@ function showProductivityWidget() {
   let initialX;
   let initialY;
   
-  widget.addEventListener('mousedown', (e) => {
-    if (e.target === widget || e.target === widget.querySelector('h3')) {
-      isDragging = true;
-      initialX = e.clientX - widget.offsetLeft;
-      initialY = e.clientY - widget.offsetTop;
-    }
+  const widgetHeader = widget.querySelector('.widget-header');
+  
+  widgetHeader.addEventListener('mousedown', (e) => {
+    isDragging = true;
+    initialX = e.clientX - widget.offsetLeft;
+    initialY = e.clientY - widget.offsetTop;
   });
   
   document.addEventListener('mousemove', (e) => {
@@ -245,18 +237,52 @@ function showProductivityWidget() {
   });
   
   let timeLeft = 25 * 60;
+  let totalTime = 25 * 60;
   let interval = null;
   let isRunning = false;
+  let sessionCount = 1;
+  let isBreak = false;
   
   const timerEl = widget.querySelector('#pomodoro-timer');
   const startBtn = widget.querySelector('#start-btn');
   const stopBtn = widget.querySelector('#stop-btn');
   const resetBtn = widget.querySelector('#reset-btn');
+  const skipBtn = widget.querySelector('#skip-btn');
+  const sessionEl = widget.querySelector('#session-count');
+  const modeEl = widget.querySelector('#mode-label');
+  const progressFill = widget.querySelector('#progress-fill');
   
   function updateTimer() {
     const mins = Math.floor(timeLeft / 60);
     const secs = timeLeft % 60;
     timerEl.textContent = `${mins}:${secs.toString().padStart(2, '0')}`;
+    const progress = ((totalTime - timeLeft) / totalTime) * 100;
+    progressFill.style.width = progress + '%';
+  }
+  
+  function playSound() {
+    const audio = new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIGGS57OihUBELTKXh8bllHAU2jdXvzn0pBSh+zPDajzsKElyx6OyrWBUIQ5zd8sFuJAUuhM/z24k2CBhku+zooVARC0yl4fG5ZRwFNo3V7859KQUofsz');
+    audio.play().catch(() => {});
+  }
+  
+  function startBreak() {
+    isBreak = true;
+    timeLeft = 5 * 60;
+    totalTime = 5 * 60;
+    modeEl.textContent = 'Break';
+    updateTimer();
+    playSound();
+  }
+  
+  function startFocus() {
+    isBreak = false;
+    timeLeft = 25 * 60;
+    totalTime = 25 * 60;
+    modeEl.textContent = 'Focus';
+    sessionCount++;
+    sessionEl.textContent = sessionCount;
+    updateTimer();
+    playSound();
   }
   
   startBtn.addEventListener('click', () => {
@@ -272,7 +298,11 @@ function showProductivityWidget() {
         if (timeLeft <= 0) {
           clearInterval(interval);
           isRunning = false;
-          timerEl.textContent = 'Done!';
+          if (isBreak) {
+            startFocus();
+          } else {
+            startBreak();
+          }
           startBtn.style.display = 'inline-block';
           stopBtn.style.display = 'none';
         }
@@ -292,13 +322,31 @@ function showProductivityWidget() {
   resetBtn.addEventListener('click', () => {
     clearInterval(interval);
     isRunning = false;
+    isBreak = false;
+    sessionCount = 1;
     timeLeft = 25 * 60;
+    totalTime = 25 * 60;
+    modeEl.textContent = 'Focus';
+    sessionEl.textContent = sessionCount;
     updateTimer();
     startBtn.style.display = 'inline-block';
     stopBtn.style.display = 'none';
   });
   
-  widget.querySelector('.close-btn').addEventListener('click', () => {
+  skipBtn.addEventListener('click', () => {
+    clearInterval(interval);
+    isRunning = false;
+    if (isBreak) {
+      startFocus();
+    } else {
+      startBreak();
+    }
+    startBtn.style.display = 'inline-block';
+    stopBtn.style.display = 'none';
+  });
+  
+  const closeBtn = widget.querySelector('.close-btn');
+  closeBtn.addEventListener('click', () => {
     if (interval) clearInterval(interval);
     widget.remove();
   });
