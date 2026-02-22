@@ -46,36 +46,29 @@ const Popup: React.FC = () => {
   const [pomodoroInterval, setPomodoroInterval] = useState<number | null>(null);
   const [breakTime, setBreakTime] = useState<number>(5 * 60);
   const [isBreak, setIsBreak] = useState<boolean>(false);
+  const [isInitialized, setIsInitialized] = useState<boolean>(false);
 
   useEffect(() => {
-    const initializeStorage = async () => {
+    if (!isInitialized) {
       chrome.storage.local.get(['currentEra', 'currentMood'], (data: any) => {
-        if (data.currentEra) {
-          setSelectedEra(data.currentEra);
-          updatePopupTheme(data.currentEra);
-        }
-        if (data.currentMood) {
-          setSelectedMood(data.currentMood);
-        }
+        if (data.currentEra) setSelectedEra(data.currentEra);
+        if (data.currentMood) setSelectedMood(data.currentMood);
+        setIsInitialized(true);
       });
-    };
+    }
+  }, [isInitialized]);
 
-    initializeStorage();
-
-    const handleStorageChange = (changes: any, area: string) => {
-      if (area === 'local') {
-        if (changes.currentEra) {
-          const newEra = changes.currentEra.newValue || '';
-          setSelectedEra(newEra);
-          updatePopupTheme(newEra);
-        }
-        if (changes.currentMood) {
-          setSelectedMood(changes.currentMood.newValue || '');
-        }
+  useEffect(() => {
+    if (isInitialized) {
+      const container = document.querySelector('.popup-container');
+      if (container) {
+        container.classList.remove('theme-medieval', 'theme-kawaii', 'theme-nature');
+        if (selectedEra) container.classList.add(`theme-${selectedEra}`);
       }
-    };
-    chrome.storage.onChanged.addListener(handleStorageChange);
+    }
+  }, [selectedEra, isInitialized]);
 
+  useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {
       if (e.ctrlKey || e.metaKey) {
         if (e.key === '1') { setCurrentTab('pomodoro'); e.preventDefault(); }
@@ -83,20 +76,8 @@ const Popup: React.FC = () => {
       }
     };
     window.addEventListener('keydown', handleKeyPress);
-    
-    return () => {
-      chrome.storage.onChanged.removeListener(handleStorageChange);
-      window.removeEventListener('keydown', handleKeyPress);
-    };
+    return () => window.removeEventListener('keydown', handleKeyPress);
   }, []);
-
-  const updatePopupTheme = (era: string) => {
-    const container = document.querySelector('.popup-container');
-    if (container) {
-      container.classList.remove('theme-medieval', 'theme-kawaii', 'theme-nature');
-      if (era) container.classList.add(`theme-${era}`);
-    }
-  };
 
   const applyEra = async (era: string, mood: string) => {
     const tabs = await new Promise<chrome.tabs.Tab[]>((resolve) => {
@@ -168,7 +149,6 @@ const Popup: React.FC = () => {
     setSelectedEra('');
     setSelectedMood('');
     await chrome.storage.local.set({ currentEra: '', currentMood: '' });
-    updatePopupTheme('');
 
     try {
       await chrome.tabs.sendMessage(tab.id, { action: 'stopEffects' });
