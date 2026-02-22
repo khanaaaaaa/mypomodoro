@@ -2,8 +2,6 @@
 
 A Chrome extension that transforms web pages with themed styles and includes a Pomodoro timer for productivity.
 
-[Try the Demo](https://github.com/khanaaaaaa/Pomodoro-x-Themes/releases)
-
 ## Update
 
 Recent enhancements to the Pomodoro timer widget include improved visual design and expanded functionality. The timer text now displays in white across all themes for better readability. The medieval theme has been updated with lighter, more refined color tones. Dark mode styling has been removed to maintain consistent appearance across different system preferences.
@@ -19,11 +17,10 @@ New productivity features have been added to the timer widget. A session counter
 - Break Management: Automatic 5-minute breaks after each focus session
 - Progress Visualization: Real-time progress bar showing time remaining
 - Session Control: Skip between focus and break periods as needed
-- Audio Notifications: Sound alerts when switching between modes
 
 ## Installation
 
-1. Download [pastas-pomodoro-v1.0.0.crx](https://github.com/khanaaaaaa/Pomodoro-x-Themes/releases/download/v1.0.0/pastas-pomodoro-v1.0.0.crx)
+1. Download [pastas-pomodoro-v1.0.0.crx](https://github.com/khanaaaaaa/mypomodoro/releases/download/v1.0.0/pastas-pomodoro-v1.0.0.crx)
 2. Open Chrome and go to `chrome://extensions`
 3. Enable "Developer mode" (top right)
 4. Drag and drop the .crx file onto the extensions page
