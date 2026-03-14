@@ -91,14 +91,6 @@ Brings cute anime aesthetics with playful pink tones to any webpage.
 - Widget Style: Pink gradient header with vibrant pink buttons
 - Visual Features: Rounded corners on all buttons
 
-### Nature Forest
-Creates a calming green environment inspired by natural landscapes.
-- Background: Soft green with subtle leaf patterns
-- Typography: Georgia serif fonts
-- Color Scheme: Various shades of green from light to forest
-- Special Effects: Leaf emojis on headings, nature-themed emoji injections
-- Widget Style: Green gradient header with nature-toned buttons
-
 ## Mood Modifiers
 
 Mood modifiers alter the typography and font styling across all themes:
