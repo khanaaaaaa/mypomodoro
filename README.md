@@ -9,7 +9,6 @@ Pasta Pomodoro is a chrome web extension I built that helps with productivity an
 - Theme Transformation
 - Pomodoro Timer
 - Break Management
-- Progress Visualization
 - Session Control
 
 ## Installation
@@ -25,7 +24,7 @@ Pasta Pomodoro is a chrome web extension I built that helps with productivity an
 
 ## Why I made it
 
-When I saw there was a sidequest in Flavortown for Chrome Extensions, I wanted try to build something cool even when I didn't know much about Chrome Extensions nor GitHub. I wanted to make something I would use, and what's more useful for a student than a Pomodoro Timer! (Exams were going on when I made it)
+When I saw there was a sidequest in Flavortown for Chrome Extensions, I wanted try to build something cool even when I didn't know much about Chrome Extensions nor GitHub. I wanted to make something I would use, and what's more useful for a student than a Pomodoro Timer! (Exams were going on when I made it so maybe a self awarness of procrastination led me to build this.)
 
 ## How I made it
 
