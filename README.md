@@ -13,7 +13,7 @@ Pasta Pomodoro is a chrome web extension I built that helps with productivity an
 
 ## Installation
 
-1. Install [Pasta Pomodoro](https://chromewebstore.google.com/detail/pastas-pomodoro/phaelkkehkdfnionlbdjaiemklclgifa)
+1. Install [Pasta Pomodoro](https://chromewebstore.google.com/detail/pastas-pomodoro/phaelkkehkdfnionlbdjaiemklclgifa) from Chrome Web Store
 
 ## OR
 
